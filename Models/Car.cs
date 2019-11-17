@@ -24,5 +24,7 @@ namespace RaceApp.Models
 
         [StringLength(100, ErrorMessage = "Cannot contain more than 100 letters")]
         public string? EngineBuilder { get; set; }
+
+        // Foreign Key back to User
     }
 }

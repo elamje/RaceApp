@@ -22,5 +22,7 @@ namespace RaceApp.Models
 
         // Nullable if event isn't on weekend
         public int? EpochWeekendNum { get; set; }
+
+        // Foreign Key back to users registered
     }
 }

@@ -1,7 +1,4 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Hosting;
@@ -29,12 +26,10 @@ namespace RaceApp
         {
             // Services Add
             services.AddControllersWithViews();
+            services.AddMvcCore();
 
-            services.AddDbContext<ApplicationDbContext>(options => 
+            services.AddDbContextPool<ApplicationDbContext>(options => 
 				options.UseSqlServer(Configuration.GetConnectionString("RaceDB")));
-
-            // services.AddDbContext<RepositoryContext>(options => 
-            //     options.UseSqlServer(Configuration.GetConnectionString("RaceDB")));
 
             services.AddIdentity<ApplicationUser, IdentityRole<int>>()
 				.AddEntityFrameworkStores<ApplicationDbContext>()
@@ -100,6 +95,8 @@ namespace RaceApp
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
+
+                endpoints.MapRazorPages();
             });
         }
     }
