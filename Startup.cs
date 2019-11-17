@@ -11,6 +11,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
+using RaceApp.Models;
+
 namespace RaceApp
 {
     public class Startup
@@ -31,7 +33,10 @@ namespace RaceApp
             services.AddDbContext<ApplicationDbContext>(options => 
 				options.UseSqlServer(Configuration.GetConnectionString("RaceDB")));
 
-            services.AddIdentity<ApplicationUser, IdentityRole>()
+            // services.AddDbContext<RepositoryContext>(options => 
+            //     options.UseSqlServer(Configuration.GetConnectionString("RaceDB")));
+
+            services.AddIdentity<ApplicationUser, IdentityRole<int>>()
 				.AddEntityFrameworkStores<ApplicationDbContext>()
 				.AddDefaultTokenProviders();
 
@@ -85,7 +90,6 @@ namespace RaceApp
             }
             app.UseHttpsRedirection();
             app.UseStaticFiles();
-
             app.UseRouting();
 
             app.UseAuthorization();
