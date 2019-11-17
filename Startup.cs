@@ -7,8 +7,10 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.AspNetCore.Identity.UI.Services;
 
 using RaceApp.Models;
+using RaceApp.Services;
 
 namespace RaceApp
 {
@@ -26,7 +28,7 @@ namespace RaceApp
         {
             // Services Add
             services.AddControllersWithViews();
-            services.AddMvcCore();
+            services.AddRazorPages();
 
             services.AddDbContextPool<ApplicationDbContext>(options => 
 				options.UseSqlServer(Configuration.GetConnectionString("RaceDB")));
@@ -35,13 +37,22 @@ namespace RaceApp
 				.AddEntityFrameworkStores<ApplicationDbContext>()
 				.AddDefaultTokenProviders();
 
+            services.AddTransient<IEmailSender, Services.Email>(i => 
+                new Services.Email(
+                    Configuration["EmailSender:Host"],
+                    Configuration.GetValue<int>("EmailSender:Port"),
+                    Configuration.GetValue<bool>("EmailSender:EnableSSL"),
+                    Configuration["EmailSender:UserName"],
+                    Configuration["EmailSender:Password"]
+                )
+            );
+
             // Services Configure
             services.Configure<IdentityOptions>(options => 
             {
                 // Password settings.
                 options.Password.RequireDigit = true;
                 options.Password.RequireLowercase = true;
-                options.Password.RequireNonAlphanumeric = true;
                 options.Password.RequireUppercase = true;
                 options.Password.RequiredLength = 8;
                 options.Password.RequiredUniqueChars = 1;
@@ -57,6 +68,13 @@ namespace RaceApp
                 options.User.RequireUniqueEmail = true;
             });
 
+            services.AddMvc().SetCompatibilityVersion(Microsoft.AspNetCore.Mvc.CompatibilityVersion.Version_3_0)
+                .AddRazorPagesOptions(options => 
+                {
+                    options.Conventions.AuthorizeAreaFolder("Identity", "/Account/Manage");
+                    options.Conventions.AuthorizeAreaPage("Identity", "/Account/Logout");
+                });
+
             services.ConfigureApplicationCookie(options =>
             {
                 // Cookie settings
@@ -64,6 +82,7 @@ namespace RaceApp
                 options.ExpireTimeSpan = TimeSpan.FromMinutes(5);
 
                 options.LoginPath = "/Identity/Account/Login";
+                options.LogoutPath = "/Identity/Account/Logout";
                 options.AccessDeniedPath = "/Identity/Account/AccessDenied";
                 options.SlidingExpiration = true;
             });
@@ -95,7 +114,6 @@ namespace RaceApp
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
-
                 endpoints.MapRazorPages();
             });
         }

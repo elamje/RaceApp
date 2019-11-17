@@ -1,8 +1,6 @@
 Support for ASP.NET Core Identity was added to your project
 - The code for adding Identity to your project was generated under Areas/Identity.
 
-Configuration of the Identity related services can be found in the Areas/Identity/IdentityHostingStartup.cs file.
-
 
 The generated UI requires support for static files. To add static files to your app:
 1. Call app.UseStaticFiles() from your Configure method
