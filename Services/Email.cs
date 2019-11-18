@@ -25,11 +25,13 @@ namespace RaceApp.Services {
 
         public Task SendEmailAsync(string email, string subject, string htmlMessage) {
             var client = new SmtpClient(host, port) {
+                UseDefaultCredentials = false,
+                DeliveryMethod = SmtpDeliveryMethod.Network,
                 Credentials = new NetworkCredential(userName, password),
                 EnableSsl = enableSSL
             };
             return client.SendMailAsync(
-                new MailMessage("no-reply@raceday.fake.url", email, subject, htmlMessage) { IsBodyHtml = true }
+                new MailMessage("j3elam@gmail.com", email, subject, htmlMessage) { IsBodyHtml = true }
             );
         }
     }
