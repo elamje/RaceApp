@@ -18,13 +18,14 @@ namespace RaceApp.Models
         [StringLength(100, ErrorMessage = "Cannot contain more than 100 letters")]
         public string Model { get; set; }
 
+        # nullable enable
         // Optional if enduro
         [StringLength(100, ErrorMessage = "Cannot contain more than 100 letters")]
         public string? EngineType { get; set; }
 
         [StringLength(100, ErrorMessage = "Cannot contain more than 100 letters")]
         public string? EngineBuilder { get; set; }
-
+        # nullable disable
         // Foreign Key back to User
     }
 }
