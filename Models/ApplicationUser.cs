@@ -7,15 +7,13 @@ namespace RaceApp.Models
     {	
 		[Required]
 		[StringLength(100, ErrorMessage = "Cannot contain more than 100 letters")]
+        [Display(Name = "First Name")]
 		public string First { get; set; } 
 
 		[Required]
 		[StringLength(100, ErrorMessage = "Cannot contain more than 100 letters")]
+        [Display(Name = "Last Name")]
 		public string Last { get; set; }
 
-		[Required]
-		[EmailAddress]
-        [StringLength(100, ErrorMessage = "Email cannot be more than 100 characters")]
-		public string EmailAddress { get; set; }
     }
 }
