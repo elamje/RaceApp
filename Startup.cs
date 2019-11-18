@@ -39,11 +39,11 @@ namespace RaceApp
 
             services.AddTransient<IEmailSender, Services.Email>(i => 
                 new Services.Email(
-                    Configuration["EmailSender:Host"],
-                    Configuration.GetValue<int>("EmailSender:Port"),
-                    Configuration.GetValue<bool>("EmailSender:EnableSSL"),
-                    Configuration["EmailSender:UserName"],
-                    Configuration["EmailSender:Password"]
+                    Configuration["Email:Host"],
+                    Configuration.GetValue<int>("Email:Port"),
+                    Configuration.GetValue<bool>("Email:EnableSSL"),
+                    Configuration["Email:UserName"],
+                    Configuration["Email:Password"]
                 )
             );
 
@@ -51,11 +51,12 @@ namespace RaceApp
             services.Configure<IdentityOptions>(options => 
             {
                 // Password settings.
-                options.Password.RequireDigit = true;
+                options.Password.RequireDigit = false;
                 options.Password.RequireLowercase = false;
                 options.Password.RequireUppercase = false;
-                options.Password.RequiredLength = 8;
-                options.Password.RequiredUniqueChars = 0;
+                options.Password.RequiredLength = 4;
+                options.Password.RequiredUniqueChars = 1;
+                options.Password.RequireNonAlphanumeric = false;
 
                 // Lockout settings.
                 options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);

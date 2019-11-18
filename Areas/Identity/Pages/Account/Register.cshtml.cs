@@ -44,8 +44,17 @@ namespace RaceApp.Areas.Identity.Pages.Account
 
         public IList<AuthenticationScheme> ExternalLogins { get; set; }
 
-        public class InputModel : ApplicationUser
+        public class InputModel
         {
+            [Required]
+            [StringLength(100, ErrorMessage = "Cannot contain more than 100 letters")]
+            [Display(Name = "First Name")]
+            public string First { get; set; } 
+
+            [Required]
+            [StringLength(100, ErrorMessage = "Cannot contain more than 100 letters")]
+            [Display(Name = "Last Name")]
+            public string Last { get; set; }
 
             [Required]
             [EmailAddress]

@@ -29,7 +29,7 @@ namespace RaceApp.Services {
                 EnableSsl = enableSSL
             };
             return client.SendMailAsync(
-                new MailMessage(userName, email, subject, htmlMessage) { IsBodyHtml = true }
+                new MailMessage("no-reply@raceday.fake.url", email, subject, htmlMessage) { IsBodyHtml = true }
             );
         }
     }
