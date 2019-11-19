@@ -1,3 +1,5 @@
+using System.Net;
+using System.Security.Principal;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -5,7 +7,10 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
+
 using RaceApp.Models;
 
 namespace RaceApp.Controllers
@@ -14,16 +19,24 @@ namespace RaceApp.Controllers
     public class CarController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly UserManager<ApplicationUser> _userManager;
 
-        public CarController(ApplicationDbContext context)
+        public CarController(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
         {
             _context = context;
+            _userManager = userManager;
+        }
+
+        private async Task<ApplicationUser> GetCurrentUser()
+        {
+            return await _userManager.GetUserAsync(HttpContext.User);
         }
 
         // GET: Car
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Cars.Where(c => c.ApplicationUserId == c.ApplicationUserId).ToListAsync()); //FIXME
+            var user = await _userManager.GetUserAsync(User);
+            return View(await _context.Cars.Where( c => c.ApplicationUserId == user.Id).ToListAsync()); //FIXME
         }
 
         // GET: Car/Details/5
@@ -57,6 +70,9 @@ namespace RaceApp.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("CarId,CarNumber,Make,Model,EngineType,EngineBuilder")] Car car)
         {
+            var user = await _userManager.GetUserAsync(User);
+            car.ApplicationUserId = user.Id;
+
             if (ModelState.IsValid)
             {
                 _context.Add(car);
