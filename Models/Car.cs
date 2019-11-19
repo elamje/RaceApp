@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using System.Collections.Generic;
 
 namespace RaceApp.Models
 {
@@ -31,5 +32,6 @@ namespace RaceApp.Models
         public int ApplicationUserId { get; set; }
         public ApplicationUser User { get; set; }
 
+        public ICollection<Registration> Registrations { get; set; }
     }
 }

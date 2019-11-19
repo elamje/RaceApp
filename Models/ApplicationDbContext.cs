@@ -45,16 +45,11 @@ namespace RaceApp.Models
                 .HasForeignKey(eu => eu.ApplicationUserId);
 
             // Seed Data
-            // builder.Entity<ApplicationUser>().HasData(
-            //     new ApplicationUser{ Id = 1, First = "Test", Last = "Test", Email = "test@mailinator.com", NormalizedEmail = "TEST@MAILINATOR.COM",}
-            // );  
-            // builder.Entity<Car>().HasData(
-            //     new Car { CarId = 1, CarNumber = 96, Make = "Ford", Model = "GT", ApplicationUserId = 1},
-            //     new Car { CarId = 2, CarNumber = 12, Make = "Ferrari", Model = "Enzo", EngineType = "Gas", EngineBuilder = "Carol Shelby", ApplicationUserId = 1} 
-            // );
-            // builder.Entity<Event>().HasData(
-            //     new Event { EventId = 1, Type = 1, Cost = 12.5M, DiscountedCost = 10M, DateTime = new DateTime(2020, 3, 15, 5, 20, 0) }
-            // );
+            builder.Entity<Event>().HasData(
+                new Event { EventId = 1, Type = 1, Cost = 12.5M, DiscountedCost = 10M, DateTime = new DateTime(2020, 3, 15, 5, 20, 0) , EpochWeekendNum = 10, Name = "Weekend10 Enduro", Description = "Event Details"},
+                new Event { EventId = 2, Type = 2, Cost = 5.5M, DiscountedCost = 3M, DateTime = new DateTime(2020, 3, 15, 5, 20, 0) , EpochWeekendNum = 10, Name = "Weekend10 Short", Description = "Event Details"},
+                new Event { EventId = 3, Type = 1, Cost = 120.5M, DiscountedCost = 100M, DateTime = new DateTime(2020, 4, 16, 5, 20, 0) , EpochWeekendNum = 16, Name = "Weekend16 Enduro", Description = "Event Details"}
+            );
         }
 
     }
