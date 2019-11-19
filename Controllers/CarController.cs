@@ -23,7 +23,7 @@ namespace RaceApp.Controllers
         // GET: Car
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Cars.ToListAsync());
+            return View(await _context.Cars.Where(c => c.ApplicationUserId == c.ApplicationUserId).ToListAsync()); //FIXME
         }
 
         // GET: Car/Details/5

@@ -21,6 +21,8 @@ namespace RaceApp.Models
         public Boolean SendSuccess { get; set; }
 
         // Foreign Key back to recipient User account
+        public int ApplicationUserId { get; set; }
+        public ApplicationUser User { get; set; }
 
     }
 }

@@ -153,6 +153,7 @@ namespace RaceApp.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
+                        .HasColumnName("ApplicationUserId")
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
@@ -223,7 +224,7 @@ namespace RaceApp.Migrations
                         .HasName("UserNameIndex")
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
-                    b.ToTable("AspNetUsers");
+                    b.ToTable("ApplicationUser");
                 });
 
             modelBuilder.Entity("RaceApp.Models.Car", b =>
@@ -232,6 +233,9 @@ namespace RaceApp.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("ApplicationUserId")
+                        .HasColumnType("int");
 
                     b.Property<int>("CarNumber")
                         .HasColumnType("int");
@@ -256,25 +260,9 @@ namespace RaceApp.Migrations
 
                     b.HasKey("CarId");
 
-                    b.ToTable("Cars");
+                    b.HasIndex("ApplicationUserId");
 
-                    b.HasData(
-                        new
-                        {
-                            CarId = 1,
-                            CarNumber = 96,
-                            Make = "Ford",
-                            Model = "GT"
-                        },
-                        new
-                        {
-                            CarId = 2,
-                            CarNumber = 12,
-                            EngineBuilder = "Carol Shelby",
-                            EngineType = "Gas",
-                            Make = "Ferrari",
-                            Model = "Enzo"
-                        });
+                    b.ToTable("Cars");
                 });
 
             modelBuilder.Entity("RaceApp.Models.Email", b =>
@@ -283,6 +271,9 @@ namespace RaceApp.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("ApplicationUserId")
+                        .HasColumnType("int");
 
                     b.Property<string>("Message")
                         .IsRequired()
@@ -300,6 +291,8 @@ namespace RaceApp.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("EmailId");
+
+                    b.HasIndex("ApplicationUserId");
 
                     b.ToTable("Emails");
                 });
@@ -329,16 +322,21 @@ namespace RaceApp.Migrations
                     b.HasKey("EventId");
 
                     b.ToTable("Events");
+                });
 
-                    b.HasData(
-                        new
-                        {
-                            EventId = 1,
-                            Cost = 12.5m,
-                            DateTime = new DateTime(2020, 3, 15, 5, 20, 0, 0, DateTimeKind.Unspecified),
-                            DiscountedCost = 10m,
-                            Type = 1
-                        });
+            modelBuilder.Entity("RaceApp.Models.EventUser", b =>
+                {
+                    b.Property<int>("EventId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ApplicationUserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("EventId", "ApplicationUserId");
+
+                    b.HasIndex("ApplicationUserId");
+
+                    b.ToTable("EventUsers");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<int>", b =>
@@ -388,6 +386,39 @@ namespace RaceApp.Migrations
                     b.HasOne("RaceApp.Models.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("RaceApp.Models.Car", b =>
+                {
+                    b.HasOne("RaceApp.Models.ApplicationUser", "User")
+                        .WithMany("Cars")
+                        .HasForeignKey("ApplicationUserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("RaceApp.Models.Email", b =>
+                {
+                    b.HasOne("RaceApp.Models.ApplicationUser", "User")
+                        .WithMany("Emails")
+                        .HasForeignKey("ApplicationUserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("RaceApp.Models.EventUser", b =>
+                {
+                    b.HasOne("RaceApp.Models.ApplicationUser", "ApplicationUser")
+                        .WithMany("EventUsers")
+                        .HasForeignKey("ApplicationUserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("RaceApp.Models.Event", "Event")
+                        .WithMany("EventUsers")
+                        .HasForeignKey("EventId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
