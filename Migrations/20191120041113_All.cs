@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace RaceApp.Migrations
 {
-    public partial class Initial : Migration
+    public partial class All : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -60,6 +60,8 @@ namespace RaceApp.Migrations
                     Cost = table.Column<decimal>(nullable: false),
                     DiscountedCost = table.Column<decimal>(nullable: false),
                     DateTime = table.Column<DateTime>(nullable: false),
+                    Name = table.Column<string>(maxLength: 100, nullable: false),
+                    Description = table.Column<string>(maxLength: 1000, nullable: false),
                     EpochWeekendNum = table.Column<int>(nullable: true)
                 },
                 constraints: table =>
@@ -137,6 +139,7 @@ namespace RaceApp.Migrations
                     CarNumber = table.Column<int>(nullable: false),
                     Make = table.Column<string>(maxLength: 100, nullable: false),
                     Model = table.Column<string>(maxLength: 100, nullable: false),
+                    IsEnduro = table.Column<bool>(nullable: false),
                     EngineType = table.Column<string>(maxLength: 100, nullable: true),
                     EngineBuilder = table.Column<string>(maxLength: 100, nullable: true),
                     ApplicationUserId = table.Column<int>(nullable: false)
@@ -149,7 +152,8 @@ namespace RaceApp.Migrations
                         column: x => x.ApplicationUserId,
                         principalTable: "ApplicationUser",
                         principalColumn: "ApplicationUserId",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Cascade,
+                        onUpdate: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -172,7 +176,8 @@ namespace RaceApp.Migrations
                         column: x => x.ApplicationUserId,
                         principalTable: "ApplicationUser",
                         principalColumn: "ApplicationUserId",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Cascade,
+                        onUpdate: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -221,28 +226,54 @@ namespace RaceApp.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "EventUsers",
+                name: "Registration",
                 columns: table => new
                 {
-                    EventId = table.Column<int>(nullable: false),
-                    ApplicationUserId = table.Column<int>(nullable: false)
+                    RegistrationId = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    DiscountQualified = table.Column<bool>(nullable: false),
+                    ApplicationUserId = table.Column<int>(nullable: false),
+                    CarId = table.Column<int>(nullable: false),
+                    EventId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_EventUsers", x => new { x.EventId, x.ApplicationUserId });
+                    table.PrimaryKey("PK_Registration", x => x.RegistrationId);
                     table.ForeignKey(
-                        name: "FK_EventUsers_ApplicationUser_ApplicationUserId",
+                        name: "FK_Registration_ApplicationUser_ApplicationUserId",
                         column: x => x.ApplicationUserId,
                         principalTable: "ApplicationUser",
                         principalColumn: "ApplicationUserId",
+                        onDelete: ReferentialAction.NoAction,
+                        onUpdate: ReferentialAction.NoAction);
+                    table.ForeignKey(
+                        name: "FK_Registration_Cars_CarId",
+                        column: x => x.CarId,
+                        principalTable: "Cars",
+                        principalColumn: "CarId",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_EventUsers_Events_EventId",
+                        name: "FK_Registration_Events_EventId",
                         column: x => x.EventId,
                         principalTable: "Events",
                         principalColumn: "EventId",
                         onDelete: ReferentialAction.Cascade);
                 });
+
+            migrationBuilder.InsertData(
+                table: "Events",
+                columns: new[] { "EventId", "Cost", "DateTime", "Description", "DiscountedCost", "EpochWeekendNum", "Name", "Type" },
+                values: new object[] { 1, 12.5m, new DateTime(2020, 3, 15, 5, 20, 0, 0, DateTimeKind.Unspecified), "Event Details", 10m, 10, "Weekend10 Enduro", 1 });
+
+            migrationBuilder.InsertData(
+                table: "Events",
+                columns: new[] { "EventId", "Cost", "DateTime", "Description", "DiscountedCost", "EpochWeekendNum", "Name", "Type" },
+                values: new object[] { 2, 5.5m, new DateTime(2020, 3, 15, 5, 20, 0, 0, DateTimeKind.Unspecified), "Event Details", 3m, 10, "Weekend10 Short", 2 });
+
+            migrationBuilder.InsertData(
+                table: "Events",
+                columns: new[] { "EventId", "Cost", "DateTime", "Description", "DiscountedCost", "EpochWeekendNum", "Name", "Type" },
+                values: new object[] { 3, 120.5m, new DateTime(2020, 4, 16, 5, 20, 0, 0, DateTimeKind.Unspecified), "Event Details", 100m, 16, "Weekend16 Enduro", 1 });
 
             migrationBuilder.CreateIndex(
                 name: "EmailIndex",
@@ -294,9 +325,19 @@ namespace RaceApp.Migrations
                 column: "ApplicationUserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_EventUsers_ApplicationUserId",
-                table: "EventUsers",
+                name: "IX_Registration_ApplicationUserId",
+                table: "Registration",
                 column: "ApplicationUserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Registration_CarId",
+                table: "Registration",
+                column: "CarId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Registration_EventId",
+                table: "Registration",
+                column: "EventId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -317,22 +358,22 @@ namespace RaceApp.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "Cars");
-
-            migrationBuilder.DropTable(
                 name: "Emails");
 
             migrationBuilder.DropTable(
-                name: "EventUsers");
+                name: "Registration");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
-                name: "ApplicationUser");
+                name: "Cars");
 
             migrationBuilder.DropTable(
                 name: "Events");
+
+            migrationBuilder.DropTable(
+                name: "ApplicationUser");
         }
     }
 }

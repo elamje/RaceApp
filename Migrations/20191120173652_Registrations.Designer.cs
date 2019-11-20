@@ -10,8 +10,8 @@ using RaceApp.Models;
 namespace RaceApp.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20191120031537_IsEnduro")]
-    partial class IsEnduro
+    [Migration("20191120173652_Registrations")]
+    partial class Registrations
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -401,7 +401,7 @@ namespace RaceApp.Migrations
 
                     b.HasIndex("EventId");
 
-                    b.ToTable("Registration");
+                    b.ToTable("Registrations");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<int>", b =>

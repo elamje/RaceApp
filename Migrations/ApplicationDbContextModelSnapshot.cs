@@ -399,7 +399,7 @@ namespace RaceApp.Migrations
 
                     b.HasIndex("EventId");
 
-                    b.ToTable("Registration");
+                    b.ToTable("Registrations");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<int>", b =>

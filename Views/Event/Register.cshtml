@@ -1,51 +1,51 @@
-@model RaceApp.Controllers.EventController.EventRegisterViewModel
+@model RaceApp.Controllers.EventController.InputModel
 
 <body>
 <table class="table">
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Name)
+                @Html.DisplayNameFor(model => model.Event.Name)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.DateTime)
+                @Html.DisplayNameFor(model => model.Event.DateTime)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Cost)
+                @Html.DisplayNameFor(model => model.Event.Cost)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.DiscountedCost)
+                @Html.DisplayNameFor(model => model.Event.DiscountedCost)
             </th>
         </tr>
     </thead>
     <tbody>
         <tr>
             <td>
-                @Html.DisplayFor(model => model.Name)
+                @Html.DisplayFor(model => model.Event.Name)
             </td>
             <td>
-                @Html.DisplayFor(model => model.DateTime)
+                @Html.DisplayFor(model => model.Event.DateTime)
             </td>
             <td>
-                @Html.DisplayFor(model => model.Cost)
+                @Html.DisplayFor(model => model.Event.Cost)
             </td>
             <td>
-                @Html.DisplayFor(model => model.DiscountedCost)
+                @Html.DisplayFor(model => model.Event.DiscountedCost)
             </td>
         </tr>
     </tbody>
 </table>
 
 
-<h1>Race Registration</h1>
+<h3>Race Registration</h3>
 
 <div class="row">
     <div class="col-md-4">
-        <form method="post">
-            <h4>Select Car to Register.</h4>
+        <form asp-controller="Event" asp-action="Register" asp-route-id="@Model.Event.EventId" method="post">
+            <h5>Select Car to Register.</h5>
             <hr />
             <div asp-validation-summary="All" class="text-danger"></div>
-            <select asp-for="CarId" asp-items="Model.Cars">
+            <select asp-for="CarId" asp-items="@Model.Cars">
                 <option>Select Car Number</option>
             </select>
             <button type="submit" class="btn btn-primary">Register</button>

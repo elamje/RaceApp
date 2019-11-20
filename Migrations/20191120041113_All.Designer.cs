@@ -10,8 +10,8 @@ using RaceApp.Models;
 namespace RaceApp.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20191119193156_EventSeedDataAndRegister")]
-    partial class EventSeedDataAndRegister
+    [Migration("20191120041113_All")]
+    partial class All
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -250,6 +250,9 @@ namespace RaceApp.Migrations
                         .HasColumnType("nvarchar(100)")
                         .HasMaxLength(100);
 
+                    b.Property<bool>("IsEnduro")
+                        .HasColumnType("bit");
+
                     b.Property<string>("Make")
                         .IsRequired()
                         .HasColumnType("nvarchar(100)")
@@ -314,7 +317,8 @@ namespace RaceApp.Migrations
 
                     b.Property<string>("Description")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(1000)")
+                        .HasMaxLength(1000);
 
                     b.Property<decimal>("DiscountedCost")
                         .HasColumnType("decimal(18,2)");
@@ -324,7 +328,8 @@ namespace RaceApp.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(100)")
+                        .HasMaxLength(100);
 
                     b.Property<int>("Type")
                         .HasColumnType("int");

@@ -1,12 +1,6 @@
-using System.Runtime.CompilerServices;
-using System.Net;
-using System.Security.Principal;
-using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Authorization;
@@ -37,7 +31,7 @@ namespace RaceApp.Controllers
         public async Task<IActionResult> Index()
         {
             var user = await _userManager.GetUserAsync(User);
-            return View(await _context.Cars.Where( c => c.ApplicationUserId == user.Id).ToListAsync()); //FIXME
+            return View(await _context.Cars.Include(c => c.User).Where( c => c.ApplicationUserId == user.Id).ToListAsync());
         }
 
         // GET: Car/Create
@@ -73,7 +67,7 @@ namespace RaceApp.Controllers
                 return NotFound();
             }
 
-            var car = await _context.Cars.FindAsync(id);
+            var car = await _context.Cars.Include(c => c.User).FirstOrDefaultAsync(c => c.CarId == id);
             if (car == null)
             {
                 return NotFound();
@@ -88,6 +82,10 @@ namespace RaceApp.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("CarId,CarNumber,Make,Model,IsEnduro,EngineType,EngineBuilder")] Car car)
         {
+            // hacky workaround due to losing the ApplicationUserId from Client side Bind. Don't use controller scaffolding going forward.
+            var car_2 = await _context.Cars.Include(c => c.User).AsNoTracking().FirstOrDefaultAsync(c => c.CarId == id);
+            car.ApplicationUserId = car_2.ApplicationUserId;
+
             if (id != car.CarId)
             {
                 return NotFound();

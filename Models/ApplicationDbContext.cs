@@ -10,6 +10,7 @@ namespace RaceApp.Models
         public DbSet<Car> Cars { get; set; }
         public DbSet<Email> Emails { get; set; }
         public DbSet<Event> Events { get; set; }
+        public DbSet<Registration> Registrations { get; set; }
         // public DbSet<EventUser> EventUsers { get; set; }
         
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
