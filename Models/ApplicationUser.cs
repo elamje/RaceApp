@@ -19,6 +19,6 @@ namespace RaceApp.Models
         public ICollection<Email> Emails { get; set; }
         public ICollection<Registration> Registrations { get; set; }
 
-        public ICollection<EventUser> EventUsers { get; set; }
+        // public ICollection<EventUser> EventUsers { get; set; }
     }
 }

@@ -19,6 +19,10 @@ namespace RaceApp.Models
         [StringLength(100, ErrorMessage = "Cannot contain more than 100 letters")]
         public string Model { get; set; }
 
+        [Required]
+        [CarType]
+        public bool IsEnduro { get; set; }
+
         # nullable enable
         // Optional if enduro
         [StringLength(100, ErrorMessage = "Cannot contain more than 100 letters")]

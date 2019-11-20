@@ -1,3 +1,4 @@
+using System.Runtime.CompilerServices;
 using System.Net;
 using System.Security.Principal;
 using System;
@@ -39,24 +40,6 @@ namespace RaceApp.Controllers
             return View(await _context.Cars.Where( c => c.ApplicationUserId == user.Id).ToListAsync()); //FIXME
         }
 
-        // GET: Car/Details/5
-        public async Task<IActionResult> Details(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var car = await _context.Cars
-                .FirstOrDefaultAsync(m => m.CarId == id);
-            if (car == null)
-            {
-                return NotFound();
-            }
-
-            return View(car);
-        }
-
         // GET: Car/Create
         public IActionResult Create()
         {
@@ -68,7 +51,7 @@ namespace RaceApp.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("CarId,CarNumber,Make,Model,EngineType,EngineBuilder")] Car car)
+        public async Task<IActionResult> Create([Bind("CarId,CarNumber,Make,Model,IsEnduro,EngineType,EngineBuilder")] Car car)
         {
             var user = await _userManager.GetUserAsync(User);
             car.ApplicationUserId = user.Id;
@@ -103,7 +86,7 @@ namespace RaceApp.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("CarId,CarNumber,Make,Model,EngineType,EngineBuilder")] Car car)
+        public async Task<IActionResult> Edit(int id, [Bind("CarId,CarNumber,Make,Model,IsEnduro,EngineType,EngineBuilder")] Car car)
         {
             if (id != car.CarId)
             {

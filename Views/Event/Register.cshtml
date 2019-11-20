@@ -1,0 +1,59 @@
+@model RaceApp.Controllers.EventController.EventRegisterViewModel
+
+<body>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DateTime)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Cost)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DiscountedCost)
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+                @Html.DisplayFor(model => model.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(model => model.DateTime)
+            </td>
+            <td>
+                @Html.DisplayFor(model => model.Cost)
+            </td>
+            <td>
+                @Html.DisplayFor(model => model.DiscountedCost)
+            </td>
+        </tr>
+    </tbody>
+</table>
+
+
+<h1>Race Registration</h1>
+
+<div class="row">
+    <div class="col-md-4">
+        <form method="post">
+            <h4>Select Car to Register.</h4>
+            <hr />
+            <div asp-validation-summary="All" class="text-danger"></div>
+            <select asp-for="CarId" asp-items="Model.Cars">
+                <option>Select Car Number</option>
+            </select>
+            <button type="submit" class="btn btn-primary">Register</button>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
+</body>

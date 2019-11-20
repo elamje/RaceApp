@@ -10,7 +10,7 @@ namespace RaceApp.Models
         public DbSet<Car> Cars { get; set; }
         public DbSet<Email> Emails { get; set; }
         public DbSet<Event> Events { get; set; }
-        public DbSet<EventUser> EventUsers { get; set; }
+        // public DbSet<EventUser> EventUsers { get; set; }
         
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
@@ -32,17 +32,17 @@ namespace RaceApp.Models
             });
 
             // Join Table for Event and User Many - Many
-            builder.Entity<EventUser>().HasKey(eu => new { eu.EventId, eu.ApplicationUserId });
+            // builder.Entity<EventUser>().HasKey(eu => new { eu.EventId, eu.ApplicationUserId });
             
-            builder.Entity<EventUser>()
-                .HasOne<Event>(eu => eu.Event)
-                .WithMany(e => e.EventUsers)
-                .HasForeignKey(eu => eu.EventId);
+            // builder.Entity<EventUser>()
+            //     .HasOne<Event>(eu => eu.Event)
+            //     .WithMany(e => e.EventUsers)
+            //     .HasForeignKey(eu => eu.EventId);
 
-            builder.Entity<EventUser>()
-                .HasOne<ApplicationUser>(eu => eu.ApplicationUser)
-                .WithMany(e => e.EventUsers)
-                .HasForeignKey(eu => eu.ApplicationUserId);
+            // builder.Entity<EventUser>()
+            //     .HasOne<ApplicationUser>(eu => eu.ApplicationUser)
+            //     .WithMany(e => e.EventUsers)
+            //     .HasForeignKey(eu => eu.ApplicationUserId);
 
             // Seed Data
             builder.Entity<Event>().HasData(

@@ -25,16 +25,18 @@ namespace RaceApp.Models
         public DateTime DateTime { get; set; }
 
         [Required]
+        [StringLength(100, ErrorMessage = "Event Name cannot be more than 100 characters")]
         public string Name { get; set; }
 
         [Required]
+        [StringLength(1000, ErrorMessage = "Event Description cannot be more than 1000 characters")]
         [Display(Name = "About")]
         public string Description { get; set; }
 
         // Nullable if event isn't on weekend, Weekend Count since Epoch
         public int? EpochWeekendNum { get; set; }
 
-        public ICollection<EventUser> EventUsers { get; set; }
+        // public ICollection<EventUser> EventUsers { get; set; }
 
         public ICollection<Registration> Registrations { get; set; }
     }
