@@ -73,11 +73,3 @@ Navigation/Control Buttons
   * Register & Deregister here
 * Events
 * Cars
-
-***
-TODO
-* Only discount for different race types
-
-***
-INFO
-sql1 docker with SApass = BadPassword1
