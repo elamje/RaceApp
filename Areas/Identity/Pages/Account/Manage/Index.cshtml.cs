@@ -5,6 +5,9 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using System.Collections.Generic;
+using Microsoft.EntityFrameworkCore;
+using System.Linq;
 
 using RaceApp.Models;
 
@@ -42,11 +45,16 @@ namespace RaceApp.Areas.Identity.Pages.Account.Manage
 
             [Display(Name = "Last Name")]
             public string Last { get; set; }
+
+            public ICollection<Event> Events { get; set; }
         }
 
         private async Task LoadAsync(ApplicationUser user)
         {
             var userName = await _userManager.GetUserNameAsync(user);
+            ICollection<Event> events = await _context.Registrations.Include(r => r.Event)
+                .Where(r => r.ApplicationUserId == user.Id)
+                .Select(s => s.Event).ToListAsync();
 
             Username = userName;
 
@@ -54,6 +62,7 @@ namespace RaceApp.Areas.Identity.Pages.Account.Manage
             {
                 First = user.First,
                 Last = user.Last,
+                Events = events
             };
         }
 

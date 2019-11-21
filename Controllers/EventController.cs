@@ -92,7 +92,19 @@ namespace RaceApp.Controllers
                 var Event = await _context.Events.FindAsync(id);
                 var user = await _context.Users.FirstOrDefaultAsync(u => u.Id == user_temp.Id);
                 Registration discountCheck = await _context.Registrations.Where(r => r.User.Id == user_temp.Id).FirstOrDefaultAsync();
+                Registration alreadyRegisteredCheck = await _context.Registrations.Where(r => r.User.Id == user_temp.Id && r.EventId == id).FirstOrDefaultAsync();
+                Car carValid = await _context.Cars.Where(c => c.ApplicationUserId == user_temp.Id && c.CarId == model.CarId).FirstOrDefaultAsync();
                 
+
+                if (carValid == null)
+                {
+                    return RedirectToAction(nameof(Index), TempData["StatusMessage"] = "Oops, that isn't a valid car.");
+                }
+                if (alreadyRegisteredCheck != null)
+                {
+                    return RedirectToAction(nameof(Index), TempData["StatusMessage"] = "You've already registered for this.");
+                }
+
                 // get user registrations
                 // check if they are already registered with 
                 Registration registration = new Registration 
@@ -122,10 +134,24 @@ namespace RaceApp.Controllers
             return View(model);
         }
 
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
+        // POST: Event/Registration/Delete/5
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Deregister(int id)
         {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+            // Lookup by user and event
+            var user = await _userManager.GetUserAsync(User);
+            var registration = await _context.Registrations.Include(r => r.Event).Where(r => r.EventId == id && r.ApplicationUserId == user.Id).FirstOrDefaultAsync();
+            if (registration == null)
+            {
+                return NotFound();
+            } 
+            else 
+            {
+                _context.Registrations.Remove(registration);
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(Index), TempData["StatusMessage"] = "You were unregistered successfully.");
+            }
         }
 
     }

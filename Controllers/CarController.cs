@@ -45,7 +45,7 @@ namespace RaceApp.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("CarId,CarNumber,Make,Model,IsEnduro,EngineType,EngineBuilder")] Car car)
+        public async Task<IActionResult> Create([Bind("CarNumber,Make,Model,IsEnduro,EngineType,EngineBuilder")] Car car)
         {
             var user = await _userManager.GetUserAsync(User);
             car.ApplicationUserId = user.Id;

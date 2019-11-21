@@ -9,6 +9,7 @@ namespace RaceApp.Models
         public int CarId { get; set; }
 
         [Required]
+        [Display(Name="Car Number")]
         public int CarNumber { get; set; }
 
         [Required]
@@ -20,15 +21,19 @@ namespace RaceApp.Models
         public string Model { get; set; }
 
         [Required]
-        [CarType]
+        [Display(Name="Is Car Enduro?")]
         public bool IsEnduro { get; set; }
 
         # nullable enable
         // Optional if enduro
         [StringLength(100, ErrorMessage = "Cannot contain more than 100 letters")]
+        [Display(Name="Engine Type")]
+        [CarType]
         public string? EngineType { get; set; }
 
         [StringLength(100, ErrorMessage = "Cannot contain more than 100 letters")]
+        [Display(Name="Engine Builder Name")]
+        [CarType]
         public string? EngineBuilder { get; set; }
         # nullable disable
 

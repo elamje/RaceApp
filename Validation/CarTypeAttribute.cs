@@ -1,3 +1,4 @@
+using System.Reflection.Emit;
 using System.ComponentModel.DataAnnotations;
 
 using RaceApp.Models;
@@ -8,16 +9,27 @@ public class CarTypeAttribute : ValidationAttribute
     {
         var car = (Car)validationContext.ObjectInstance;
         
-        if (car.IsEnduro && (car.EngineBuilder == null || car.EngineType == null))
+        if (car.IsEnduro && car.EngineBuilder == null)
         {
-            return new ValidationResult(GetErrorMessage());
+            return new ValidationResult(GetEngineBuilderErrorMessage());
         }
-
-        return ValidationResult.Success;
+        else if (car.IsEnduro && car.EngineType == null)
+        {
+            return new ValidationResult(GetEngineTypeErrorMessage());
+        }
+        else 
+        {
+            return ValidationResult.Success;
+        }
     }
 
-    public string GetErrorMessage()
+    public string GetEngineBuilderErrorMessage()
     {
-        return $"Enduro Cars require and Engine Builder and Engine Type";
+        return $"Engine Builder required for Enduro Cars";
+    }
+
+    public string GetEngineTypeErrorMessage()
+    {
+        return $"Engine Type required for Enduro Cars";
     }
 }

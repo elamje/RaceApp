@@ -29,6 +29,33 @@
     </div>
 </div>
 
+<table class="table">
+    
+    <tbody>
+@foreach (var item in Model.Input.Events) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DateTime)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Cost)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DiscountedCost)
+            </td>
+            <td>
+                <form method="post">
+                    <button asp-controller="Event" asp-action="Deregister" asp-route-id="@item.EventId">Deregister</button>
+                </form>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
+
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
 }

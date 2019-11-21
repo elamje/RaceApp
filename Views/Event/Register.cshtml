@@ -42,11 +42,17 @@
 <div class="row">
     <div class="col-md-4">
         <form asp-controller="Event" asp-action="Register" asp-route-id="@Model.Event.EventId" method="post">
-            <h5>Select Car to Register.</h5>
+            @if(Model.Cars.Count() == 0) 
+            {
+                <a asp-controller="Car" asp-action="Create"><h5>First, Add Enduro or Short Car to your account.</h5></a>
+            }
+            else 
+            {
+                <h5>Select Car to Register.</h5>
+            }
             <hr />
             <div asp-validation-summary="All" class="text-danger"></div>
             <select asp-for="CarId" asp-items="@Model.Cars">
-                <option>Select Car Number</option>
             </select>
             <button type="submit" class="btn btn-primary">Register</button>
         </form>
