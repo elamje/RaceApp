@@ -36,8 +36,6 @@ namespace RaceApp.Models
         // Nullable if event isn't on weekend, Weekend Count since Epoch
         public int? EpochWeekendNum { get; set; }
 
-        // public ICollection<EventUser> EventUsers { get; set; }
-
         public ICollection<Registration> Registrations { get; set; }
     }
 }

@@ -10,7 +10,6 @@ namespace RaceApp.Models
         public DbSet<Car> Cars { get; set; }
         public DbSet<Event> Events { get; set; }
         public DbSet<Registration> Registrations { get; set; }
-        // public DbSet<EventUser> EventUsers { get; set; }
         
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
@@ -20,29 +19,13 @@ namespace RaceApp.Models
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
-            // Customize the ASP.NET Core Identity model and override the defaults if needed.
-            // For example, you can rename the ASP.NET Core Identity table names and more.
-            // Add your customizations after calling base.OnModelCreating(builder);
-
+            
             // Configure Id for Application User
             builder.Entity<ApplicationUser>(entity =>
             {
                 entity.ToTable("ApplicationUser");
                 entity.Property(e => e.Id).HasColumnName("ApplicationUserId");
             });
-
-            // Join Table for Event and User Many - Many
-            // builder.Entity<EventUser>().HasKey(eu => new { eu.EventId, eu.ApplicationUserId });
-            
-            // builder.Entity<EventUser>()
-            //     .HasOne<Event>(eu => eu.Event)
-            //     .WithMany(e => e.EventUsers)
-            //     .HasForeignKey(eu => eu.EventId);
-
-            // builder.Entity<EventUser>()
-            //     .HasOne<ApplicationUser>(eu => eu.ApplicationUser)
-            //     .WithMany(e => e.EventUsers)
-            //     .HasForeignKey(eu => eu.ApplicationUserId);
 
             // Seed Data
             builder.Entity<Event>().HasData(
