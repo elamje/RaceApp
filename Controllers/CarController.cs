@@ -82,6 +82,7 @@ namespace RaceApp.Controllers
         {
             // hacky workaround due to losing the ApplicationUserId from Client side Bind. Don't use controller scaffolding going forward.
             var car_2 = await _context.Cars.Include(c => c.User).AsNoTracking().FirstOrDefaultAsync(c => c.CarId == id);
+            
             car.ApplicationUserId = car_2.ApplicationUserId;
 
             if (id != car.CarId)

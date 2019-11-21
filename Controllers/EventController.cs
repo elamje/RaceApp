@@ -61,12 +61,12 @@ namespace RaceApp.Controllers
             if (Event.Type == 1)
             {
                 carList = await _context.Cars.Where(c => c.ApplicationUserId == user.Id && c.IsEnduro)
-                .Select(s => new Tuple<int, int>(s.CarId, s.CarNumber)).ToListAsync();
+                    .Select(s => new Tuple<int, int>(s.CarId, s.CarNumber)).ToListAsync();
             }
             else
             {
                 carList = await _context.Cars.Where(c => c.ApplicationUserId == user.Id && !c.IsEnduro)
-                .Select(s => new Tuple<int, int>(s.CarId, s.CarNumber)).ToListAsync();
+                    .Select(s => new Tuple<int, int>(s.CarId, s.CarNumber)).ToListAsync();
             }
 
             Input = new InputModel
@@ -93,10 +93,13 @@ namespace RaceApp.Controllers
                 var user_temp = await _userManager.GetUserAsync(User);
                 var Event = await _context.Events.FindAsync(id);
                 var user = await _context.Users.FirstOrDefaultAsync(u => u.Id == user_temp.Id);
-                Registration alreadyRegisteredCheck = await _context.Registrations.Where(r => r.User.Id == user_temp.Id && r.EventId == id).FirstOrDefaultAsync();
-                Car carValid = await _context.Cars.Where(c => c.ApplicationUserId == user_temp.Id && c.CarId == model.CarId).FirstOrDefaultAsync();
+                Registration alreadyRegisteredCheck = await _context.Registrations.Where(r => r.User.Id == user_temp.Id && r.EventId == id)
+                    .FirstOrDefaultAsync();
+                Car carValid = await _context.Cars.Where(c => c.ApplicationUserId == user_temp.Id && c.CarId == model.CarId)
+                    .FirstOrDefaultAsync();
 
-                Registration discountCheck = await _context.Registrations.Where(r => r.User.Id == user_temp.Id && r.Event.Type != Event.Type && r.Event.EpochWeekendNum == Event.EpochWeekendNum).FirstOrDefaultAsync();
+                Registration discountCheck = await _context.Registrations.Where(r => r.User.Id == user_temp.Id 
+                    && r.Event.Type != Event.Type && r.Event.EpochWeekendNum == Event.EpochWeekendNum).FirstOrDefaultAsync();
 
 
                 if (carValid == null)
@@ -119,7 +122,8 @@ namespace RaceApp.Controllers
                 };
 
                 string emailMessage = registration.DiscountQualified ? $"You were successfully registered for {Event.Name}!" +
-                        " You got the discounted rate for signing up for an Enduro and Short race on the same weekend." : $"You were successfully registered for {Event.Name}!";
+                        " You got the discounted rate for signing up for an Enduro and Short race on the same weekend." 
+                        : $"You were successfully registered for {Event.Name}!";
 
                 try
                 {
@@ -145,7 +149,9 @@ namespace RaceApp.Controllers
         {
             // Lookup by user and event
             var user = await _userManager.GetUserAsync(User);
-            var registration = await _context.Registrations.Include(r => r.Event).Where(r => r.EventId == id && r.ApplicationUserId == user.Id).FirstOrDefaultAsync();
+            var registration = await _context.Registrations.Include(r => r.Event).Where(r => r.EventId == id 
+                && r.ApplicationUserId == user.Id).FirstOrDefaultAsync();
+                
             if (registration == null)
             {
                 return NotFound();
