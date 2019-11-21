@@ -6,7 +6,7 @@ Setup:
 * appsettings.json
   * I'm using a docker container to host SQL Server on my Mac, so please change your connection string to what you normally use!
   * I'm using gmail for smtp relay: If you want to use that, you need to login to your google account -> security -> enable less secure apps, If you have two factor auth enabled, there is another step I believe. 
-  * There are a few migrations to run (dotnet ef database update RemoveEmail should get you up to date)
+  * There are a few migrations to run (dotnet ef database update Enduro2EventSeedData should get you up to date)
 
 
 
