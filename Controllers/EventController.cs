@@ -91,9 +91,10 @@ namespace RaceApp.Controllers
                 var user_temp = await _userManager.GetUserAsync(User);
                 var Event = await _context.Events.FindAsync(id);
                 var user = await _context.Users.FirstOrDefaultAsync(u => u.Id == user_temp.Id);
-                Registration discountCheck = await _context.Registrations.Where(r => r.User.Id == user_temp.Id).FirstOrDefaultAsync();
                 Registration alreadyRegisteredCheck = await _context.Registrations.Where(r => r.User.Id == user_temp.Id && r.EventId == id).FirstOrDefaultAsync();
                 Car carValid = await _context.Cars.Where(c => c.ApplicationUserId == user_temp.Id && c.CarId == model.CarId).FirstOrDefaultAsync();
+                
+                Registration discountCheck = await _context.Registrations.Where(r => r.User.Id == user_temp.Id && r.Event.Type != Event.Type).FirstOrDefaultAsync();
                 
 
                 if (carValid == null)

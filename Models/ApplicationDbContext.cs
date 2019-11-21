@@ -31,7 +31,8 @@ namespace RaceApp.Models
             builder.Entity<Event>().HasData(
                 new Event { EventId = 1, Type = 1, Cost = 12.5M, DiscountedCost = 10M, DateTime = new DateTime(2020, 3, 15, 5, 20, 0) , EpochWeekendNum = 10, Name = "Weekend10 Enduro", Description = "Event Details"},
                 new Event { EventId = 2, Type = 2, Cost = 5.5M, DiscountedCost = 3M, DateTime = new DateTime(2020, 3, 15, 5, 20, 0) , EpochWeekendNum = 10, Name = "Weekend10 Short", Description = "Event Details"},
-                new Event { EventId = 3, Type = 1, Cost = 120.5M, DiscountedCost = 100M, DateTime = new DateTime(2020, 4, 16, 5, 20, 0) , EpochWeekendNum = 16, Name = "Weekend16 Enduro", Description = "Event Details"}
+                new Event { EventId = 3, Type = 1, Cost = 120.5M, DiscountedCost = 100M, DateTime = new DateTime(2020, 4, 16, 5, 20, 0) , EpochWeekendNum = 16, Name = "Weekend16 Enduro", Description = "Event Details"},
+                new Event { EventId = 4, Type = 1, Cost = 500M, DiscountedCost = 200M, DateTime = new DateTime(2020, 3, 16, 5, 20, 0) , EpochWeekendNum = 10, Name = "Weekend10 Enduro 2", Description = "Event Details"}
             );
         }
 

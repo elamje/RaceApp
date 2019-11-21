@@ -1,7 +1,7 @@
 Setup:
 
 * Repository
-  * git clone https://github.com/elamje/RaceApp.git
+  * `git clone https://github.com/elamje/RaceApp.git`
 
 * appsettings.json
   * I'm using a docker container to host SQL Server on my Mac, so please change your connection string to what you normally use!
@@ -76,7 +76,7 @@ Navigation/Control Buttons
 
 ***
 TODO
-* Remove Confirmation Email
+* Only discount for different race types
 
 ***
 INFO
