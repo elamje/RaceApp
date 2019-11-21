@@ -35,7 +35,7 @@ namespace RaceApp.Controllers
         {
             return View(await _context.Events.ToListAsync());
         }
-        
+
         // Registration Section
 
         public class InputModel
@@ -54,24 +54,28 @@ namespace RaceApp.Controllers
 
         // GET: Register for id
         public async Task<IActionResult> Register(int? id)
-        {   
+        {
             var Event = await _context.Events.FindAsync(id);
             var user = await _userManager.GetUserAsync(User);
-            
-            List<Tuple<int,int>> carList;
 
-            if (Event.Type == 1){
+            List<Tuple<int, int>> carList;
+
+            if (Event.Type == 1)
+            {
                 carList = await _context.Cars.Where(c => c.ApplicationUserId == user.Id && c.IsEnduro)
-                .Select(s => new Tuple<int, int>(s.CarId,s.CarNumber)).ToListAsync();
-            }else {
+                .Select(s => new Tuple<int, int>(s.CarId, s.CarNumber)).ToListAsync();
+            }
+            else
+            {
                 carList = await _context.Cars.Where(c => c.ApplicationUserId == user.Id && !c.IsEnduro)
-                .Select(s => new Tuple<int, int>(s.CarId,s.CarNumber)).ToListAsync();
+                .Select(s => new Tuple<int, int>(s.CarId, s.CarNumber)).ToListAsync();
             }
 
             Input = new InputModel
             {
                 Event = Event,
-                Cars = carList.Select(x => new SelectListItem() {
+                Cars = carList.Select(x => new SelectListItem()
+                {
                     Text = x.Item2.ToString(),
                     Value = x.Item1.ToString()
                 }),
@@ -93,9 +97,9 @@ namespace RaceApp.Controllers
                 var user = await _context.Users.FirstOrDefaultAsync(u => u.Id == user_temp.Id);
                 Registration alreadyRegisteredCheck = await _context.Registrations.Where(r => r.User.Id == user_temp.Id && r.EventId == id).FirstOrDefaultAsync();
                 Car carValid = await _context.Cars.Where(c => c.ApplicationUserId == user_temp.Id && c.CarId == model.CarId).FirstOrDefaultAsync();
-                
-                Registration discountCheck = await _context.Registrations.Where(r => r.User.Id == user_temp.Id && r.Event.Type != Event.Type).FirstOrDefaultAsync();
-                
+
+                Registration discountCheck = await _context.Registrations.Where(r => r.User.Id == user_temp.Id && r.Event.Type != Event.Type && r.Event.EpochWeekendNum == Event.EpochWeekendNum).FirstOrDefaultAsync();
+
 
                 if (carValid == null)
                 {
@@ -108,29 +112,30 @@ namespace RaceApp.Controllers
 
                 // get user registrations
                 // check if they are already registered with 
-                Registration registration = new Registration 
+                Registration registration = new Registration
                 {
                     DiscountQualified = discountCheck == null ? false : true,
                     ApplicationUserId = user.Id,
                     CarId = model.CarId,
-                    EventId = id 
+                    EventId = id
                 };
-                
+
+                string emailMessage = registration.DiscountQualified ? $"You were successfully registered for {Event.Name}!" +
+                        " You got the discounted rate for signing up for an Enduro and Short race on the same weekend." : $"You were successfully registered for {Event.Name}!";
+
                 try
                 {
                     _context.Add(registration);
                     await _context.SaveChangesAsync();
-                    string emailMessage = registration.DiscountQualified ? $"You were successfully registered for {Event.Name}!" +
-                        "You got the discounted rate for registering for multiple events in 1 weekend." : $"You were successfully registered for {Event.Name}!";
                     await _emailSender.SendEmailAsync(user.Email, "Registered for Race!", emailMessage);
-                } 
+                }
                 catch (Exception)
                 {
                     throw;
                 }
-                return RedirectToAction(nameof(Index), TempData["StatusMessage"] = "Event registration confirmed, check email.");
+                return RedirectToAction(nameof(Index), TempData["StatusMessage"] = emailMessage);
             }
-            
+
             // Something went wrong, return model
             return View(model);
         }
@@ -146,8 +151,8 @@ namespace RaceApp.Controllers
             if (registration == null)
             {
                 return NotFound();
-            } 
-            else 
+            }
+            else
             {
                 _context.Registrations.Remove(registration);
                 await _context.SaveChangesAsync();

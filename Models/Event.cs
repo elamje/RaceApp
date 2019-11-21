@@ -15,7 +15,7 @@ namespace RaceApp.Models
 
         [Required]
         public Decimal Cost { get; set; }
-        
+
         [Required]
         [Display(Name = "Discounted Cost")]
         public Decimal DiscountedCost { get; set; }

@@ -49,7 +49,7 @@ namespace RaceApp.Areas.Identity.Pages.Account
             [Required]
             [StringLength(100, ErrorMessage = "Cannot contain more than 100 letters")]
             [Display(Name = "First Name")]
-            public string First { get; set; } 
+            public string First { get; set; }
 
             [Required]
             [StringLength(100, ErrorMessage = "Cannot contain more than 100 letters")]
@@ -85,7 +85,7 @@ namespace RaceApp.Areas.Identity.Pages.Account
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser { UserName = Input.Email, Email = Input.Email , First = Input.First, Last = Input.Last};
+                var user = new ApplicationUser { UserName = Input.Email, Email = Input.Email, First = Input.First, Last = Input.Last };
                 var result = await _userManager.CreateAsync(user, Input.Password);
                 if (result.Succeeded)
                 {

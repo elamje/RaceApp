@@ -30,14 +30,14 @@ namespace RaceApp
             services.AddControllersWithViews();
             services.AddRazorPages();
 
-            services.AddDbContextPool<ApplicationDbContext>(options => 
-				options.UseSqlServer(Configuration.GetConnectionString("RaceDB")));
+            services.AddDbContextPool<ApplicationDbContext>(options =>
+                options.UseSqlServer(Configuration.GetConnectionString("RaceDB")));
 
             services.AddIdentity<ApplicationUser, IdentityRole<int>>()
-				.AddEntityFrameworkStores<ApplicationDbContext>()
-				.AddDefaultTokenProviders();
+                .AddEntityFrameworkStores<ApplicationDbContext>()
+                .AddDefaultTokenProviders();
 
-            services.AddTransient<IEmailSender, Services.Email>(i => 
+            services.AddTransient<IEmailSender, Services.Email>(i =>
                 new Services.Email(
                     Configuration["Email:Host"],
                     Configuration.GetValue<int>("Email:Port"),
@@ -48,7 +48,7 @@ namespace RaceApp
             );
 
             // Services Configure
-            services.Configure<IdentityOptions>(options => 
+            services.Configure<IdentityOptions>(options =>
             {
                 // Password settings.
                 options.Password.RequireDigit = false;
@@ -70,7 +70,7 @@ namespace RaceApp
             });
 
             services.AddMvc().SetCompatibilityVersion(Microsoft.AspNetCore.Mvc.CompatibilityVersion.Version_3_0)
-                .AddRazorPagesOptions(options => 
+                .AddRazorPagesOptions(options =>
                 {
                     options.Conventions.AuthorizeAreaFolder("Identity", "/Account/Manage");
                     options.Conventions.AuthorizeAreaPage("Identity", "/Account/Logout");
@@ -89,9 +89,9 @@ namespace RaceApp
             });
 
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
- 
-        
-		}
+
+
+        }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

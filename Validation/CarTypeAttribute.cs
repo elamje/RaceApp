@@ -8,7 +8,7 @@ public class CarTypeAttribute : ValidationAttribute
     protected override ValidationResult IsValid(object value, ValidationContext validationContext)
     {
         var car = (Car)validationContext.ObjectInstance;
-        
+
         if (car.IsEnduro && car.EngineBuilder == null)
         {
             return new ValidationResult(GetEngineBuilderErrorMessage());
@@ -17,7 +17,7 @@ public class CarTypeAttribute : ValidationAttribute
         {
             return new ValidationResult(GetEngineTypeErrorMessage());
         }
-        else 
+        else
         {
             return ValidationResult.Success;
         }

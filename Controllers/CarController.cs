@@ -31,7 +31,7 @@ namespace RaceApp.Controllers
         public async Task<IActionResult> Index()
         {
             var user = await _userManager.GetUserAsync(User);
-            return View(await _context.Cars.Include(c => c.User).Where( c => c.ApplicationUserId == user.Id).ToListAsync());
+            return View(await _context.Cars.Include(c => c.User).Where(c => c.ApplicationUserId == user.Id).ToListAsync());
         }
 
         // GET: Car/Create
